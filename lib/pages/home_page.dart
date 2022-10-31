@@ -17,7 +17,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Row(
           children: [
-            const Text('Today Todos'),
+            GestureDetector(
+              child: const Text('Today Todos'),
+              onTap: () => buildBottomSheet(context),
+            ),
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.search),
@@ -44,14 +47,6 @@ class HomePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: const [
-          Text(
-            'hello',
-          ),
-        ],
-      ),
-    );
+    return Container();
   }
 }

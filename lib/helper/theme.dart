@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/helper/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 appTheme() => ThemeData(
@@ -23,6 +24,12 @@ appTheme() => ThemeData(
           fontSize: 18,
           fontWeight: FontWeight.bold,
           color: HexColor('FFF7E9'),
+          shadows: [
+            Shadow(
+              color: ColorHepler.getColor(3),
+              blurRadius: 5,
+            ),
+          ],
         ),
       ),
       appBarTheme: AppBarTheme(
