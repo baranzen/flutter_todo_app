@@ -30,20 +30,25 @@ class _TaskItemState extends State<TaskItem> {
         ),
         child: ListTile(
           title: Text(widget.task.name),
-          leading: GestureDetector(
-            child: CircleAvatar(
-              child: widget.task.isCompleted
-                  ? Icon(Icons.check, color: Colors.green)
-                  : null,
-            ),
-            onTap: () {
-              setState(() {
-                widget.task.isCompleted = !widget.task.isCompleted;
-              });
-            },
-          ),
+          leading: tickIcon(),
         ),
       ),
+    );
+  }
+
+  GestureDetector tickIcon() {
+    return GestureDetector(
+      child: CircleAvatar(
+        backgroundColor: widget.task.isCompleted ? Colors.green : null,
+        child: widget.task.isCompleted
+            ? Icon(Icons.check, color: Colors.white)
+            : null,
+      ),
+      onTap: () {
+        setState(() {
+          widget.task.isCompleted = !widget.task.isCompleted;
+        });
+      },
     );
   }
 }
