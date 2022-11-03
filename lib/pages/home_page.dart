@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   key: Key(task.id),
                   onDismissed: (direction) {
-                    print('task has been dismissed');
+                    print('task has been dismissed: ${task.id}');
                     setState(() {
                       taskList.removeAt(index);
                     });

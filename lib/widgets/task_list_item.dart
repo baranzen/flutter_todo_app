@@ -17,14 +17,13 @@ class _TaskItemState extends State<TaskItem> {
   @override
   void initState() {
     textEditingController.text = widget.task.name;
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Container(
         decoration: BoxDecoration(
           color: HexColor('#DEF5E5').withOpacity(0.8),
@@ -39,13 +38,16 @@ class _TaskItemState extends State<TaskItem> {
         child: ListTile(
           leading: tickIcon(),
           title: widget.task.isCompleted
-              ? Text(widget.task.name)
+              ? Text(
+                  widget.task.name,
+                  style: TextStyle(decoration: TextDecoration.lineThrough),
+                )
               : TextField(
                   controller: textEditingController,
                   onChanged: (value) {
                     widget.task.name = value;
                   },
-                  decoration: InputDecoration(),
+                  decoration: InputDecoration(border: InputBorder.none),
                 ),
         ),
       ),
@@ -55,6 +57,7 @@ class _TaskItemState extends State<TaskItem> {
   GestureDetector tickIcon() {
     return GestureDetector(
       child: CircleAvatar(
+        radius: 18,
         backgroundColor: widget.task.isCompleted ? Colors.green : null,
         child: widget.task.isCompleted
             ? Icon(Icons.check, color: Colors.white)
