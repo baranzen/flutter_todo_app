@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/helper/theme.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 import 'pages/home_page.dart';
 

@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> {
               itemCount: taskList.length,
               itemBuilder: (context, index) {
                 Task task = taskList[index];
-                String day = task.createdAt.day.toString();
                 return Dismissible(
                   background: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -4,7 +4,7 @@ class Task {
   Task(this.id, this.name, this.createdAt, this.isCompleted);
 
   final String id;
-  final String name;
+  String name;
   final DateTime createdAt;
   bool isCompleted;
 
@@ -13,7 +13,6 @@ class Task {
   }
   @override
   String toString() {
-    // TODO: implement toString
     return 'Task{id: $id, name: $name, createdAt: $createdAt, isCompleted: $isCompleted}';
   }
 }

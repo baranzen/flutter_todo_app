@@ -13,6 +13,14 @@ class TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<TaskItem> {
+  TextEditingController textEditingController = TextEditingController();
+  @override
+  void initState() {
+    textEditingController.text = widget.task.name;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,8 +37,16 @@ class _TaskItemState extends State<TaskItem> {
           ],
         ),
         child: ListTile(
-          title: Text(widget.task.name),
           leading: tickIcon(),
+          title: widget.task.isCompleted
+              ? Text(widget.task.name)
+              : TextField(
+                  controller: textEditingController,
+                  onChanged: (value) {
+                    widget.task.name = value;
+                  },
+                  decoration: InputDecoration(),
+                ),
         ),
       ),
     );
