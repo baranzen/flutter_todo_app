@@ -5,20 +5,20 @@ import 'package:flutter_todo_app/models/task.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<Task> allTasks;
+  late List<Task> taskList;
 
   @override
   void initState() {
     super.initState();
-    allTasks = <Task>[];
-    allTasks.add(Task.create('fatima', DateTime(2022)));
+    taskList = <Task>[];
+    taskList.add(Task.create('walk', DateTime.now()));
   }
 
   @override
@@ -48,23 +48,22 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: false,
       ),
-      body: allTasks.isEmpty
-          ? Center(
-              child: GestureDetector(
-                onTap: () => buildBottomSheet(context),
-                child: Text('there is no tasks, lets add one'),
-              ),
-            )
-          : ListView.builder(
-              itemCount: allTasks.length,
+      body: taskList.isNotEmpty
+          ? ListView.builder(
+              itemCount: taskList.length,
               itemBuilder: (context, index) {
-                var task = allTasks[index];
+                var task = taskList[index];
                 var day = task.createdAt.day.toString();
                 return Dismissible(
+                  background: Text(
+                    'hello',
+                    textAlign: TextAlign.left,
+                  ),
                   key: Key(task.id),
                   onDismissed: (direction) {
+                    print('task has been dismissed');
                     setState(() {
-                      allTasks.removeAt(index);
+                      taskList.removeAt(index);
                     });
                   },
                   child: ListTile(
@@ -82,13 +81,19 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               },
+            )
+          : Center(
+              child: GestureDetector(
+                onTap: () => buildBottomSheet(context),
+                child: Text('there is no tasks, lets add one'),
+              ),
             ),
     );
   }
 
-  buildBottomSheet(context) {
-    var value;
-    showModalBottomSheet(
+  Future<void> buildBottomSheet(context) async {
+    String? value;
+    await showModalBottomSheet(
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -134,7 +139,7 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Add'),
               onPressed: () {
                 onSumbited(value, context);
-                print('value: $value');
+                print('task: $value');
               },
             ),
           ],
@@ -143,39 +148,42 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  onSumbited(value, context) {
-    print(value);
-    FocusScope.of(context).unfocus();
-    Navigator.pop(context);
+  Future<void> onSumbited(value, context) async {
+    if (value != null) {
+      FocusScope.of(context).unfocus();
+      Navigator.pop(context);
 
-    var textStyle = TextStyle(
-      color: ColorHepler.getColor('white'),
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-      shadows: [
-        Shadow(
-          color: ColorHepler.getColor(3),
-          blurRadius: 5,
+      var textStyle = TextStyle(
+        color: ColorHepler.getColor('white'),
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        shadows: [
+          Shadow(
+            color: ColorHepler.getColor(3),
+            blurRadius: 5,
+          ),
+        ],
+      );
+
+      await DatePicker.showDateTimePicker(
+        context,
+        currentTime: DateTime.now(),
+        locale: LocaleType.en,
+        theme: DatePickerTheme(
+          doneStyle: textStyle,
+          cancelStyle: textStyle,
+          itemStyle: textStyle,
+          backgroundColor: ColorHepler.getColor(3),
         ),
-      ],
-    );
-
-    DatePicker.showDateTimePicker(
-      context,
-      currentTime: DateTime.now(),
-      locale: LocaleType.en,
-      theme: DatePickerTheme(
-        doneStyle: textStyle,
-        cancelStyle: textStyle,
-        itemStyle: textStyle,
-        backgroundColor: ColorHepler.getColor(3),
-      ),
-      onConfirm: (time) {
-        var taskToBeAdded = Task.create(value, time);
-        allTasks.add(taskToBeAdded);
-        setState(() {});
-      },
-    );
-    print('hello6');
+        onConfirm: (time) {
+          print(time);
+          var taskToBeAdded = Task.create(value, time);
+          taskList.add(taskToBeAdded);
+          setState(() {});
+        },
+      );
+    } else {
+      return;
+    }
   }
 }

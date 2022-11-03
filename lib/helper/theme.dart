@@ -21,7 +21,7 @@ appTheme() => ThemeData(
       primaryColor: HexColor('#BAD1C2'),
       textTheme: TextTheme(
         bodyText2: TextStyle(
-          fontSize: 18,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
           color: HexColor('FFF7E9'),
           shadows: [
