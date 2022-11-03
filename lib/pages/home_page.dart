@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_todo_app/helper/colors.dart';
 import 'package:flutter_todo_app/models/task.dart';
+import 'package:flutter_todo_app/widgets/task_list_item.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,14 +51,23 @@ class _HomePageState extends State<HomePage> {
       ),
       body: taskList.isNotEmpty
           ? ListView.builder(
+              physics: const BouncingScrollPhysics(),
               itemCount: taskList.length,
               itemBuilder: (context, index) {
-                var task = taskList[index];
-                var day = task.createdAt.day.toString();
+                Task task = taskList[index];
+                String day = task.createdAt.day.toString();
                 return Dismissible(
-                  background: Text(
-                    'hello',
-                    textAlign: TextAlign.left,
+                  background: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.delete),
+                      Text('task deleted'),
+                      /*  Spacer(),
+                      Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ), */
+                    ],
                   ),
                   key: Key(task.id),
                   onDismissed: (direction) {
@@ -66,19 +76,7 @@ class _HomePageState extends State<HomePage> {
                       taskList.removeAt(index);
                     });
                   },
-                  child: ListTile(
-                    leading: task.isCompleted
-                        ? const Icon(Icons.check_box)
-                        : const Icon(Icons.check_box_outline_blank),
-                    title: Text(task.name),
-                    trailing: Text(
-                      day == '1'
-                          ? 'Today'
-                          : day == '2'
-                              ? 'Tomorrow'
-                              : day,
-                    ),
-                  ),
+                  child: TaskItem(task: task),
                 );
               },
             )
