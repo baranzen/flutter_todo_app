@@ -11,4 +11,9 @@ class Task {
   factory Task.create(String name, DateTime createdAt) {
     return Task(Uuid().v1(), name, createdAt, false);
   }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'Task{id: $id, name: $name, createdAt: $createdAt, isCompleted: $isCompleted}';
+  }
 }
