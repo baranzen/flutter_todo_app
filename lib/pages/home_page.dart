@@ -122,6 +122,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
             TextField(
+              autofocus: true,
               decoration: const InputDecoration(
                 hintText: 'Enter Todo',
                 border: OutlineInputBorder(
