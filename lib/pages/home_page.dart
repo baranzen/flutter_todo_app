@@ -19,7 +19,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     taskList = <Task>[];
-    taskList.add(Task.create('walk', DateTime.now()));
+    taskList.add(Task.create('take a walk around 🚶', DateTime.now()));
+    taskList.add(Task.create('drink water 🧊', DateTime.now()));
   }
 
   @override
@@ -75,6 +76,7 @@ class _HomePageState extends State<HomePage> {
                       taskList.removeAt(index);
                     });
                   },
+                  direction: DismissDirection.startToEnd,
                   child: TaskItem(task: task),
                 );
               },

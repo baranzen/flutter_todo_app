@@ -3,6 +3,8 @@ import 'package:flutter_todo_app/helper/colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 appTheme() => ThemeData(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       primarySwatch: MaterialColor(
         0xFFC0D9C9,
         <int, Color>{
