@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/helper/colors.dart';
 import 'package:flutter_todo_app/models/task.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 
 class TaskItem extends StatefulWidget {
   const TaskItem({Key? key, required this.task}) : super(key: key);
@@ -49,6 +50,13 @@ class _TaskItemState extends State<TaskItem> {
                   },
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
+          trailing: Text(
+            widget.task.createdAt.day == DateTime.now().day
+                ? 'Today'
+                : widget.task.createdAt.day == DateTime.now().day + 1
+                    ? 'Tomorrow'
+                    : DateFormat('dd/MM').format(widget.task.createdAt),
+          ),
         ),
       ),
     );
