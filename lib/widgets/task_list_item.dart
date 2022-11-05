@@ -17,6 +17,7 @@ class _TaskItemState extends State<TaskItem> {
   TextEditingController textEditingController = TextEditingController();
   @override
   void initState() {
+    print(widget.task.createdAt);
     textEditingController.text = widget.task.name;
     super.initState();
   }
@@ -44,6 +45,9 @@ class _TaskItemState extends State<TaskItem> {
                   style: TextStyle(decoration: TextDecoration.lineThrough),
                 )
               : TextField(
+                  textInputAction: TextInputAction.done,
+                  minLines: 1,
+                  maxLines: null,
                   controller: textEditingController,
                   onChanged: (value) {
                     widget.task.name = value;
@@ -51,11 +55,12 @@ class _TaskItemState extends State<TaskItem> {
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
           trailing: Text(
-            widget.task.createdAt.day == DateTime.now().day
+            /*           widget.task.createdAt.day == DateTime.now().day
                 ? 'Today'
                 : widget.task.createdAt.day == DateTime.now().day + 1
                     ? 'Tomorrow'
-                    : DateFormat('dd/MM').format(widget.task.createdAt),
+                    :  */
+            DateFormat('hh:mm').format(widget.task.createdAt),
           ),
         ),
       ),
