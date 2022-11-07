@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/data/local_storage.dart';
 import 'package:flutter_todo_app/helper/colors.dart';
+import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/models/task.dart';
+import 'package:flutter_todo_app/widgets/snackbar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 
@@ -15,10 +18,13 @@ class TaskItem extends StatefulWidget {
 
 class _TaskItemState extends State<TaskItem> {
   TextEditingController textEditingController = TextEditingController();
+  late LocalStorage _localStorage;
+
   @override
   void initState() {
     print(widget.task.createdAt);
     textEditingController.text = widget.task.name;
+    _localStorage = localtor<LocalStorage>();
     super.initState();
   }
 
@@ -52,6 +58,10 @@ class _TaskItemState extends State<TaskItem> {
                   onChanged: (value) {
                     widget.task.name = value;
                   },
+                  onEditingComplete: () async {
+                    await _localStorage.updateTask(task: widget.task);
+                    buildSnackBar(context, 'task updated');
+                  },
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
           trailing: Text(
@@ -76,10 +86,14 @@ class _TaskItemState extends State<TaskItem> {
             ? Icon(Icons.check, color: Colors.white)
             : null,
       ),
-      onTap: () {
+      onTap: () async {
         setState(() {
           widget.task.isCompleted = !widget.task.isCompleted;
         });
+        await _localStorage.updateTask(task: widget.task);
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        buildSnackBar(context,
+            'task marked as ${widget.task.isCompleted == true ? 'completed' : 'incomplete'}');
       },
     );
   }

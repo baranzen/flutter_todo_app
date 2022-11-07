@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_todo_app/data/local_storage.dart';
 import 'package:flutter_todo_app/helper/colors.dart';
+import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/models/task.dart';
+import 'package:flutter_todo_app/widgets/snackbar.dart';
 import 'package:flutter_todo_app/widgets/task_list_item.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -13,14 +16,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<Task> taskList;
-
+  late List<Task> _taskList;
+  late LocalStorage _localStorage;
   @override
   void initState() {
     super.initState();
-    taskList = <Task>[];
-    taskList.add(Task.create('take a walk around 🚶', DateTime.now()));
-    taskList.add(Task.create('drink water 🧊', DateTime.now()));
+    _localStorage = localtor<LocalStorage>();
+    _taskList = <Task>[];
+    _getAllTaskFromDb();
   }
 
   @override
@@ -50,12 +53,12 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: false,
       ),
-      body: taskList.isNotEmpty
+      body: _taskList.isNotEmpty
           ? ListView.builder(
               physics: const BouncingScrollPhysics(),
-              itemCount: taskList.length,
+              itemCount: _taskList.length,
               itemBuilder: (context, index) {
-                Task task = taskList[index];
+                Task task = _taskList[index];
                 return Dismissible(
                   background: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -73,8 +76,10 @@ class _HomePageState extends State<HomePage> {
                   onDismissed: (direction) {
                     print('task has been dismissed: ${task.id}');
                     setState(() {
-                      taskList.removeAt(index);
+                      _taskList.removeAt(index);
                     });
+                    _localStorage.deleteTask(task: task);
+                    buildSnackBar(context, 'task was deleted');
                   },
                   direction: DismissDirection.startToEnd,
                   child: TaskItem(task: task),
@@ -88,6 +93,14 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
     );
+  }
+
+  Future<void> _getAllTaskFromDb() async {
+    _localStorage.getAllTask().then((value) {
+      setState(() {
+        _taskList = value;
+      });
+    });
   }
 
   Future<void> buildBottomSheet(context) async {
@@ -175,10 +188,12 @@ class _HomePageState extends State<HomePage> {
           itemStyle: textStyle,
           backgroundColor: ColorHepler.getColor(3),
         ),
-        onConfirm: (time) {
+        onConfirm: (time) async {
           print(time);
-          var taskToBeAdded = Task.create(value, time);
-          taskList.add(taskToBeAdded);
+          Task taskToBeAdded = Task.create(value, time);
+          _taskList.add(taskToBeAdded);
+          await _localStorage.addTask(task: taskToBeAdded);
+          buildSnackBar(context, 'task added');
           setState(() {});
         },
       );
