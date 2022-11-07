@@ -40,7 +40,13 @@ class _HomePageState extends State<HomePage> {
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.search),
-              onPressed: () {},
+              onPressed: () {
+                /*        final paint = Paint();
+                paint.color = Colors.white;
+                paint.shader = const LinearGradient(
+                  colors: <Color>[Colors.red, Colors.yellow],
+                ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)); */
+              },
             ),
             IconButton(
               icon: const Icon(Icons.add),
@@ -150,7 +156,19 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              child: const Text('Add'),
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              )),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: const Text(
+                  'Add',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
               onPressed: () {
                 onSumbited(value, context);
                 print('task: $value');
@@ -192,7 +210,7 @@ class _HomePageState extends State<HomePage> {
         onConfirm: (time) async {
           print(time);
           Task taskToBeAdded = Task.create(value, time);
-          _taskList.add(taskToBeAdded);
+          _taskList.insert(0, taskToBeAdded);
           await _localStorage.addTask(task: taskToBeAdded);
 
           setState(() {});

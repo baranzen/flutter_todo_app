@@ -55,8 +55,9 @@ class _TaskItemState extends State<TaskItem> {
                   minLines: 1,
                   maxLines: null,
                   controller: textEditingController,
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     widget.task.name = value;
+                    await _localStorage.updateTask(task: widget.task);
                   },
                   onEditingComplete: () async {
                     await _localStorage.updateTask(task: widget.task);

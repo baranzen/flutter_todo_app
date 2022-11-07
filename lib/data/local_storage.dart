@@ -9,6 +9,7 @@ abstract class LocalStorage {
   Future<List<Task>> getAllTask();
   Future<bool> deleteTask({required Task task});
   Future<void> updateTask({required Task task});
+  Future<void> deleteAllTaskFromDisk(List<Task> taskList);
 }
 
 class HiveLocalStorage extends LocalStorage {
@@ -46,7 +47,7 @@ class HiveLocalStorage extends LocalStorage {
     List<Task> allTask = <Task>[];
     allTask = _taskBox.values.toList();
     if (allTask.isNotEmpty) {
-      allTask.sort((Task a, Task b) => a.createdAt.compareTo(b.createdAt));
+      allTask.sort((Task a, Task b) => b.createdAt.compareTo(a.createdAt));
     }
     return allTask;
   }
@@ -55,5 +56,10 @@ class HiveLocalStorage extends LocalStorage {
   @override
   Future<void> updateTask({required Task task}) async {
     await task.save();
+  }
+
+  @override
+  Future<void> deleteAllTaskFromDisk(List<Task> taskList) async {
+    taskList.isNotEmpty ? await _taskBox.clear() : null;
   }
 }
