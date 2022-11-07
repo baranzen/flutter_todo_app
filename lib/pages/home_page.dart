@@ -79,6 +79,7 @@ class _HomePageState extends State<HomePage> {
                       _taskList.removeAt(index);
                     });
                     _localStorage.deleteTask(task: task);
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     buildSnackBar(context, 'task was deleted');
                   },
                   direction: DismissDirection.startToEnd,
@@ -193,7 +194,7 @@ class _HomePageState extends State<HomePage> {
           Task taskToBeAdded = Task.create(value, time);
           _taskList.add(taskToBeAdded);
           await _localStorage.addTask(task: taskToBeAdded);
-          buildSnackBar(context, 'task added');
+
           setState(() {});
         },
       );
