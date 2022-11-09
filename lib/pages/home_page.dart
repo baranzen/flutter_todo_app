@@ -4,6 +4,7 @@ import 'package:flutter_todo_app/data/local_storage.dart';
 import 'package:flutter_todo_app/helper/colors.dart';
 import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/models/task.dart';
+import 'package:flutter_todo_app/widgets/custom_search_delegate.dart';
 import 'package:flutter_todo_app/widgets/snackbar.dart';
 import 'package:flutter_todo_app/widgets/task_list_item.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -35,12 +36,13 @@ class _HomePageState extends State<HomePage> {
           children: [
             GestureDetector(
               child: const Text('Today\'s Todos'),
-              onTap: () => buildBottomSheet(context),
+              onTap: () => buildBottomSheet(),
             ),
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.search),
               onPressed: () {
+                _showSearchPage();
                 /*        final paint = Paint();
                 paint.color = Colors.white;
                 paint.shader = const LinearGradient(
@@ -52,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.add),
               onPressed: () {
                 //show bottom sheet
-                buildBottomSheet(context);
+                buildBottomSheet();
               },
             ),
           ],
@@ -95,10 +97,27 @@ class _HomePageState extends State<HomePage> {
             )
           : Center(
               child: GestureDetector(
-                onTap: () => buildBottomSheet(context),
+                onTap: () => buildBottomSheet(),
                 child: Text('there is no tasks, lets add one'),
               ),
             ),
+    );
+  }
+
+  void _showSearchPage() {
+    showSearch(
+      context: context,
+      delegate: CustomSearchDelegate(
+        taskList: _taskList,
+        deleteTaskFromHomePage: (toBeDeletedTask) {
+          /*  setState(() {
+            _taskList.removeWhere((task) => task.id == toBeDeletedTask.id);
+          }); */
+          setState(() {
+            _taskList.remove(toBeDeletedTask);
+          });
+        },
+      ),
     );
   }
 
@@ -110,7 +129,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> buildBottomSheet(context) async {
+  Future<void> buildBottomSheet() async {
     String? value;
     await showModalBottomSheet(
       isScrollControlled: true,

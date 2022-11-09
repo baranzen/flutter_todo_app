@@ -36,7 +36,7 @@ appTheme() => ThemeData(
       ),
       appBarTheme: AppBarTheme(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: HexColor('#BAD1C2'),
         titleTextStyle: TextStyle(
           fontSize: 25,
           fontWeight: FontWeight.bold,
