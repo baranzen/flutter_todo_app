@@ -23,13 +23,13 @@ class _TaskItemState extends State<TaskItem> {
   @override
   void initState() {
     print(widget.task.createdAt);
-    textEditingController.text = widget.task.name;
     _localStorage = localtor<LocalStorage>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    textEditingController.text = widget.task.name;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Container(
