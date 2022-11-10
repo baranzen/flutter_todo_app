@@ -104,21 +104,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _showSearchPage() {
-    showSearch(
+  Future<void> _showSearchPage() async {
+    await showSearch(
       context: context,
       delegate: CustomSearchDelegate(
         taskList: _taskList,
-        deleteTaskFromHomePage: (toBeDeletedTask) {
-          /*  setState(() {
-            _taskList.removeWhere((task) => task.id == toBeDeletedTask.id);
-          }); */
-          setState(() {
-            _taskList.remove(toBeDeletedTask);
-          });
-        },
       ),
-    );
+    ).then((value) => _getAllTaskFromDb());
   }
 
   Future<void> _getAllTaskFromDb() async {

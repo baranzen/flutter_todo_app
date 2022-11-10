@@ -7,10 +7,10 @@ import 'package:flutter_todo_app/widgets/task_list_item.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
-  CustomSearchDelegate(
-      {required this.taskList, required this.deleteTaskFromHomePage});
+  CustomSearchDelegate({
+    required this.taskList,
+  });
   final List<Task> taskList;
-  Function deleteTaskFromHomePage;
 
   @override
   ThemeData appBarTheme(BuildContext context) => Theme.of(context);
@@ -51,9 +51,6 @@ class CustomSearchDelegate extends SearchDelegate {
       return SearchBody(
         taskList: filtiredList,
         query: query,
-        deleteTaskFromHomePage: (toBeDeletedTask) {
-          deleteTaskFromHomePage(toBeDeletedTask);
-        },
       );
     }
   }
@@ -71,10 +68,8 @@ class SearchBody extends StatefulWidget {
   SearchBody({
     super.key,
     required this.taskList,
-    required this.deleteTaskFromHomePage,
     required this.query,
   });
-  Function deleteTaskFromHomePage;
   List<Task> taskList;
   String query;
 
@@ -122,7 +117,6 @@ class _SearchBodyState extends State<SearchBody> {
                     _localStorage.deleteTask(task: task);
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     buildSnackBar(context, 'task was deleted');
-                    widget.deleteTaskFromHomePage(task);
                   },
                   direction: DismissDirection.startToEnd,
                   child: TaskItem(task: task),
